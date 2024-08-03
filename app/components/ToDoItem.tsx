@@ -1,27 +1,47 @@
 
-import { useFetcher  } from "@remix-run/react"
+import { useFetcher, Link  } from "@remix-run/react"
+import { RiDeleteBin2Line, RiEdit2Line } from "@remixicon/react";
 import type { ToDo } from "~/utils/todo.operations.server";
+import { ChangeEvent } from "react";
 
 type ToDoItemProps = {
     item: ToDo;
-}
+};
 
-export default function ToDoItem({ item }: ToDoItemProps) {
+export default function TodoItem({ item }: ToDoItemProps) {
     const fetcher = useFetcher();
+    const handleCompletionFlagChange = (event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        fetcher.submit(event.target.form);
+    };
 
     return (
-        <div key={item.id} className="flex gap-2">
-            <div>{item.title}</div>
-            <div>{item.description}</div>
-            <fetcher.Form method="delete" action={`todo/${item.id}`}>
+        <li className="flex gap-2 rounded cursor-pointer px-4 py-2 w-full bg-slate-100 even:bg-slate-200">
+            <fetcher.Form method="post" action={`todo/${item.id}/toggle-complete`} className="grow peer">
+                <label className="has-[:checked]:line-through has-[:checked]:text-slate-500">
+                    <input 
+                        type="checkbox" 
+                        name="completed" 
+                        checked={item.completed? true : false} 
+                        className="mr-2" 
+                        onChange={handleCompletionFlagChange}
+                    />
+                    {item.title}
+                </label>
+            </fetcher.Form>
+            <fetcher.Form method="post" action={`todo/${item.id}/delete`}>
                 <button 
-                    className="border border-current px-5 py-1"
                     name="_action"
                     value="remove"
                 >
-                    Remove
+                    <RiDeleteBin2Line />
+                    <span className="sr-only">Remove</span>
                 </button>
             </fetcher.Form>
-        </div>
+            <Link to={`/todo/${item.id}/edit`}>
+                <RiEdit2Line />
+                <span className="sr-only">Edit</span>
+            </Link>
+        </li>
     )
 }

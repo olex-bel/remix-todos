@@ -14,7 +14,7 @@ export const action = async ({
         });
     }
 
-    if (request.method === "DELETE") {      
+    if (request.method === "POST") {      
         const isSuccess = await deleteTodo(params.id);
 
         if (isSuccess) {

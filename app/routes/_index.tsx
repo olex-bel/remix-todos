@@ -1,9 +1,9 @@
-import { Form, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import type { MetaFunction, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { addTodo, getTodoItems } from "~/utils/todo.operations.server";
-import ToDoForm from "~/components/ToDoForm";
-import ToDoItem from "~/components/ToDoItem";
+import AddTodoForm from "~/components/AddTodoForm";
+import TodoItem from "~/components/TodoItem";
 
 export const meta: MetaFunction = () => {
   return [
@@ -53,13 +53,13 @@ export default function Index() {
   const { todos } = useLoaderData<typeof loader>();
 
   return (
-    <div className="font-sans p-4">
-      <ToDoForm />
-      <div>
+    <div>
+      <AddTodoForm />
+      <ul className="rounded mt-2">
         {
-          todos.map((todo) => <ToDoItem key={todo.id} item={todo} />)
+          todos.map((todo) => <TodoItem key={todo.id} item={todo} />)
         }
-      </div>
+      </ul>
     </div>
   );
 }

@@ -16,8 +16,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="font-sans p-4 bg-slate-50">
+        <header className="mb-4">
+          <h1 className="text-center text-3xl">My To Do List</h1>
+        </header>
+        <main className="max-w-3xl mx-auto">
+          {children}
+        </main>
         <ScrollRestoration />
         <Scripts />
       </body>
